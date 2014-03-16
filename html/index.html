@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>DevThis:#</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	<!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<!-- <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script> -->
+
+	<script>
+	 $(document).ready(function() {
+	 	// Get the Activity Log JSON and display it as a table.
+		$.getJSON("http://127.0.0.1:8080/activity_log.json", function(data){
+			var $table = $('<table class="table table-striped"/>');
+			$.each(data, function(index, value) {
+				var $row = $('<tr/>');
+				$('<td/>').text(value.id).appendTo($row);
+				$('<td/>').text(value.request).appendTo($row);
+				$('<td/>').text(value.timestamp).appendTo($row);
+				$('<td/>').text(value.stdout).appendTo($row);
+				$('<td/>').text(value.stderr).appendTo($row);
+				// $('<td/>').text(value.error).appendTo($row); // TODO: Provide more details 
+				$table.prepend($row);
+			});
+
+			$('#activity').append($table);
+		});
+
+		// TODO: Some form of template to reduce code duplication
+		// TODO: Update of activity table when action has completed
+		$("#clone").click(function() {
+			$.get('clone', function(data) {
+			    if(data[0].error){
+			    	$('#alert').append('<div class="alert alert-danger alert-dismissable">\
+			    				  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\
+			    				  <strong>Danger Danger!</strong> Git clone exploded.\
+			    				</div>');
+			    }else{
+			    	$('#alert').append('<div class="alert alert-success alert-dismissable">\
+			    				  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\
+			    				  <strong>Success!</strong> Git clone completed.\
+			    				</div>');
+			    }
+			});
+		});
+
+		$("#pull").click(function() {
+			$.get('pull', function(data) {
+			    if(data[0].error){
+			    	$('#alert').append('<div class="alert alert-danger alert-dismissable">\
+			    				  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\
+			    				  <strong>Danger Danger!</strong> Pull failed.\
+			    				</div>');
+			    }else{
+			    	$('#alert').append('<div class="alert alert-success alert-dismissable">\
+			    				  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\
+			    				  <strong>Success!</strong> Pull completed.\
+			    				</div>');
+			    }
+			});
+		});
+
+		$("#pull-dev").click(function() {
+			$.get('pull/?branch=master', function(data) {
+			    if(data[0].error){
+			    	$('#alert').append('<div class="alert alert-danger alert-dismissable">\
+			    				  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\
+			    				  <strong>Danger Danger!</strong> Git clone from master branch died.\
+			    				</div>');
+			    }else{
+			    	$('#alert').append('<div class="alert alert-success alert-dismissable">\
+			    				  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\
+			    				  <strong>Success!</strong> Git clone from master branch completed.\
+			    				</div>');
+			    }
+			});
+		});
+	 } );
+	</script>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DevThis:#</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Overview</a></li>
+            <li><a href="#" id="clone">Clone</a></li>
+            <li><a href="#" id="pull">Pull</a></li>
+            <li><a href="#" id="pull-dev">Pull development</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div id="alert"></div>
+          <h1 class="page-header">Dashboard</h1>
+          <h2 class="sub-header">Activity Log</h2>
+          <div class="table-responsive" id="activity">
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

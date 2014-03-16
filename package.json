@@ -1,0 +1,26 @@
+{
+  "name": "DevThis",
+  "description": "Node.js Git Interface",
+  "version": "0.0.0",
+  "homepage": "https://github.com/PMaynard/DevThis",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PMaynard/DevThis.git"
+  },
+  "author": {
+    "name": "Pete Maynard "
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "main": "main",
+  "engines": {
+    "node": ">=0.6"
+  },
+  "dependencies": {
+    "express": "*"
+    //"gitteh": "*",
+  }
+}
