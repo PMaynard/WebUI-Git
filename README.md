@@ -5,9 +5,11 @@ Web interface for git written in node.js
 1. Ensure SSH keys are correctly configured.
 
 ## Usage
-```clone
+```
+clone
 pull
-pull?branch=master```
+pull?branch=master
+```
 
 ## ToDo
 1. Pull Newest version
