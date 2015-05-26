@@ -1,4 +1,4 @@
-# DevThis
+# WebUI-Git
 Web interface for git written in node.js
 
 ## Notes
